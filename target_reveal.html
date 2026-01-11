@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Reveal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .instructions {
+            background: #fff9e6;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+            font-size: 14px;
+        }
+        .name-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 30px 0;
+        }
+        .name-btn {
+            padding: 18px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .name-btn:hover {
+            background: #5568d3;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .name-btn:active {
+            transform: translateY(0);
+        }
+        .target-reveal {
+            text-align: center;
+            padding: 40px;
+            background: #f0f7ff;
+            border-radius: 10px;
+            margin: 30px 0;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .target-reveal.showing {
+            background: #e8f5e9;
+        }
+        .target-name {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 15px 0;
+            animation: fadeIn 0.5s;
+        }
+        .clear-btn {
+            width: 100%;
+            padding: 14px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .clear-btn:hover {
+            background: #5f3a82;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Click Your Name</h1>
+        <p class="subtitle">Find out who your target is</p>
+
+        <div class="instructions">
+            <strong>Instructions:</strong> Click your name button to reveal your target. Remember who it is, then click "Clear" before the next person looks!
+        </div>
+
+        <div class="name-buttons">
+            <button class="name-btn" onclick="revealTarget('Ross')">Ross</button>
+            <button class="name-btn" onclick="revealTarget('Amy')">Amy</button>
+            <button class="name-btn" onclick="revealTarget('Jessica')">Jessica</button>
+            <button class="name-btn" onclick="revealTarget('Caragh')">Caragh</button>
+            <button class="name-btn" onclick="revealTarget('Josh')">Josh</button>
+            <button class="name-btn" onclick="revealTarget('Chantelle')">Chantelle</button>
+            <button class="name-btn" onclick="revealTarget('Will')">Will</button>
+            <button class="name-btn" onclick="revealTarget('Danny')">Danny</button>
+            <button class="name-btn" onclick="revealTarget('Vicky')">Vicky</button>
+            <button class="name-btn" onclick="revealTarget('Hannah')">Hannah</button>
+            <button class="name-btn" onclick="revealTarget('James')">James</button>
+        </div>
+
+        <div class="target-reveal" id="targetReveal">
+            <div style="color: #999; font-size: 18px;">Click your name to see your target</div>
+        </div>
+
+        <button class="clear-btn" onclick="clearReveal()">Clear Display</button>
+    </div>
+
+    <script>
+        const cycle = {
+            "Ross": "Josh",
+            "Josh": "James",
+            "James": "Amy",
+            "Amy": "Caragh",
+            "Caragh": "Hannah",
+            "Hannah": "Danny",
+            "Danny": "Will",
+            "Will": "Chantelle",
+            "Chantelle": "Vicky",
+            "Vicky": "Jessica",
+            "Jessica": "Ross",
+        };
+
+        function revealTarget(name) {
+            const revealEl = document.getElementById('targetReveal');
+            const target = cycle[name];
+            
+            revealEl.classList.add('showing');
+            revealEl.innerHTML = `
+                <div style="color: #666; font-size: 18px;">${name}'s target is:</div>
+                <div class="target-name">${target}</div>
+                <div style="color: #27ae60; margin-top: 15px; font-size: 16px;">✓ Got it? Remember this name!</div>
+            `;
+        }
+
+        function clearReveal() {
+            const revealEl = document.getElementById('targetReveal');
+            revealEl.classList.remove('showing');
+            revealEl.innerHTML = '<div style="color: #999; font-size: 18px;">Click your name to see your target</div>';
+        }
+    </script>
+</body>
+</html>
