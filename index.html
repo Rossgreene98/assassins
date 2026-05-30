@@ -19,17 +19,8 @@
             border-radius: 10px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
+        h1 { color: #333; text-align: center; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-size: 14px; }
         .instructions {
             background: #fff9e6;
             padding: 15px;
@@ -53,56 +44,63 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         .name-btn:hover {
             background: #5568d3;
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
         }
-        .name-btn:active {
-            transform: translateY(0);
-        }
-        .target-reveal {
-            text-align: center;
-            padding: 40px;
-            background: #f0f7ff;
-            border-radius: 10px;
-            margin: 30px 0;
-            min-height: 120px;
-            display: flex;
-            flex-direction: column;
+        .name-btn:active { transform: translateY(0); }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10;
+            align-items: center;
             justify-content: center;
-            transition: all 0.3s;
         }
-        .target-reveal.showing {
-            background: #e8f5e9;
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            max-width: 340px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: popIn 0.2s ease;
         }
-        .target-name {
-            font-size: 36px;
-            font-weight: bold;
-            color: #667eea;
-            margin: 15px 0;
-            animation: fadeIn 0.5s;
-        }
-        .clear-btn {
+        .modal-emoji { font-size: 40px; margin-bottom: 15px; }
+        .modal-title { margin: 0 0 10px; color: #333; font-size: 20px; }
+        .modal-text { color: #666; font-size: 15px; margin: 0 0 25px; }
+        .modal-btn {
             width: 100%;
             padding: 14px;
-            background: #764ba2;
-            color: white;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
             font-size: 16px;
             font-weight: 600;
-            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 10px;
         }
-        .clear-btn:hover {
-            background: #5f3a82;
+        .modal-btn-primary { background: #667eea; color: white; }
+        .modal-btn-primary:hover { background: #5568d3; }
+        .modal-btn-secondary { background: #f0f0f0; color: #555; }
+        .modal-btn-secondary:hover { background: #e0e0e0; }
+        .modal-btn-close { background: #764ba2; color: white; }
+        .modal-btn-close:hover { background: #5f3a82; }
+        .result-name {
+            font-size: 40px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0 25px;
+            animation: popIn 0.3s ease;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to   { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
@@ -110,63 +108,97 @@
     <div class="container">
         <h1>🎯 Click Your Name</h1>
         <p class="subtitle">Find out who your target is</p>
-
         <div class="instructions">
-            <strong>Instructions:</strong> Click your name button to reveal your target. Remember who it is, then click "Clear" before the next person looks!
+            <strong>Instructions:</strong> Tap your name. Confirm it's really you, then your target will appear. Keep it secret!
         </div>
-
         <div class="name-buttons">
-            <button class="name-btn" onclick="revealTarget('Ross')">Ross</button>
-            <button class="name-btn" onclick="revealTarget('Amy')">Amy</button>
-            <button class="name-btn" onclick="revealTarget('Jessica')">Jessica</button>
-            <button class="name-btn" onclick="revealTarget('Caragh')">Caragh</button>
-            <button class="name-btn" onclick="revealTarget('Josh')">Josh</button>
-            <button class="name-btn" onclick="revealTarget('Chantelle')">Chantelle</button>
-            <button class="name-btn" onclick="revealTarget('Will')">Will</button>
-            <button class="name-btn" onclick="revealTarget('Danny')">Danny</button>
-            <button class="name-btn" onclick="revealTarget('Vicky')">Vicky</button>
-            <button class="name-btn" onclick="revealTarget('Hannah')">Hannah</button>
-            <button class="name-btn" onclick="revealTarget('James')">James</button>
+            <button class="name-btn" onclick="startReveal('Sam')">Sam</button>
+            <button class="name-btn" onclick="startReveal('Henrieett')">Henrieett</button>
+            <button class="name-btn" onclick="startReveal('Jonathan')">Jonathan</button>
+            <button class="name-btn" onclick="startReveal('Kate')">Kate</button>
+            <button class="name-btn" onclick="startReveal('Nathan')">Nathan</button>
+            <button class="name-btn" onclick="startReveal('Rochelle')">Rochelle</button>
+            <button class="name-btn" onclick="startReveal('Genevieve')">Genevieve</button>
+            <button class="name-btn" onclick="startReveal('Emily')">Emily</button>
+            <button class="name-btn" onclick="startReveal('Leady')">Leady</button>
+            <button class="name-btn" onclick="startReveal('Grace')">Grace</button>
+            <button class="name-btn" onclick="startReveal('Daniela')">Daniela</button>
+            <button class="name-btn" onclick="startReveal('Carol')">Carol</button>
+            <button class="name-btn" onclick="startReveal('Natasha')">Natasha</button>
+            <button class="name-btn" onclick="startReveal('Pete')">Pete</button>
+            <button class="name-btn" onclick="startReveal('David')">David</button>
+            <button class="name-btn" onclick="startReveal('Sarah')">Sarah</button>
+            <button class="name-btn" onclick="startReveal('James')">James</button>
         </div>
+        <p style="text-align:center; color:#999; font-size:13px;">Tap your name to get started</p>
+    </div>
 
-        <div class="target-reveal" id="targetReveal">
-            <div style="color: #999; font-size: 18px;">Click your name to see your target</div>
+    <!-- Confirm modal -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-emoji">👀</div>
+            <h2 class="modal-title" id="confirmTitle"></h2>
+            <p class="modal-text" id="confirmText"></p>
+            <button class="modal-btn modal-btn-primary" onclick="doReveal()">Reveal my target</button>
+            <button class="modal-btn modal-btn-secondary" onclick="closeConfirm()">Cancel</button>
         </div>
+    </div>
 
-        <button class="clear-btn" onclick="clearReveal()">Clear Display</button>
+    <!-- Result modal -->
+    <div id="resultModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-emoji">🎯</div>
+            <p class="modal-text" id="resultLabel"></p>
+            <div class="result-name" id="resultName"></div>
+            <button class="modal-btn modal-btn-close" onclick="closeResult()">Got it — close</button>
+        </div>
     </div>
 
     <script>
         const cycle = {
-            "Ross": "Josh",
-            "Josh": "James",
-            "James": "Amy",
-            "Amy": "Caragh",
-            "Caragh": "Hannah",
-            "Hannah": "Danny",
-            "Danny": "Will",
-            "Will": "Chantelle",
-            "Chantelle": "Vicky",
-            "Vicky": "Jessica",
-            "Jessica": "Ross",
+            "Daniela": "Emily",
+            "Emily": "Carol",
+            "Carol": "David",
+            "David": "Kate",
+            "Kate": "Grace",
+            "Grace": "Henrieett",
+            "Henrieett": "Leady",
+            "Leady": "Genevieve",
+            "Genevieve": "James",
+            "James": "Jonathan",
+            "Jonathan": "Rochelle",
+            "Rochelle": "Sam",
+            "Sam": "Sarah",
+            "Sarah": "Pete",
+            "Pete": "Natasha",
+            "Natasha": "Nathan",
+            "Nathan": "Daniela",
         };
 
-        function revealTarget(name) {
-            const revealEl = document.getElementById('targetReveal');
-            const target = cycle[name];
-            
-            revealEl.classList.add('showing');
-            revealEl.innerHTML = `
-                <div style="color: #666; font-size: 18px;">${name}'s target is:</div>
-                <div class="target-name">${target}</div>
-                <div style="color: #27ae60; margin-top: 15px; font-size: 16px;">✓ Got it? Remember this name!</div>
-            `;
+        let pendingName = null;
+
+        function startReveal(name) {
+            pendingName = name;
+            document.getElementById('confirmTitle').textContent = `Confirm reveal for ${name}`;
+            document.getElementById('confirmText').textContent = `Only ${name} should be looking at the screen right now!`;
+            document.getElementById('confirmModal').classList.add('open');
         }
 
-        function clearReveal() {
-            const revealEl = document.getElementById('targetReveal');
-            revealEl.classList.remove('showing');
-            revealEl.innerHTML = '<div style="color: #999; font-size: 18px;">Click your name to see your target</div>';
+        function closeConfirm() {
+            pendingName = null;
+            document.getElementById('confirmModal').classList.remove('open');
+        }
+
+        function doReveal() {
+            document.getElementById('confirmModal').classList.remove('open');
+            document.getElementById('resultLabel').textContent = `${pendingName}'s target is:`;
+            document.getElementById('resultName').textContent = cycle[pendingName];
+            document.getElementById('resultModal').classList.add('open');
+        }
+
+        function closeResult() {
+            pendingName = null;
+            document.getElementById('resultModal').classList.remove('open');
         }
     </script>
 </body>
